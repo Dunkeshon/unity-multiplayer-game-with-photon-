@@ -136,10 +136,17 @@ namespace multiplayerPracticeGame
             //#Critical : add displaying player counter
 
             // shown to players, who are already in the room
+
+
             if(PhotonNetwork.CurrentRoom.PlayerCount==(int)maxPlayersPerRoom){
                 PhotonNetwork.CurrentRoom.IsOpen = false;
                 Debug.Log("Maximum players achieved. Room is closed");
             }
+            if(PhotonNetwork.CurrentRoom.PlayerCount > (int)maxPlayersPerRoom){
+                PhotonNetwork.LoadLevel("MazeLvl");
+                Debug.Log("minimum players achieved. level loading");
+            }
+            
             
             Debug.Log("New player entered the room");
         }

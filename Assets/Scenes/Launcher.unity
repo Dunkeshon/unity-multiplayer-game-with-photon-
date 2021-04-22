@@ -1072,7 +1072,7 @@ MonoBehaviour:
   maxPlayersPerRoom: 4
   minimumPlayersNeeded: 2
   loginGroup: {fileID: 686265460}
-  gameVersion: 1
+  progressLabel: {fileID: 1444011127}
 --- !u!4 &1040409633
 Transform:
   m_ObjectHideFlags: 0
