@@ -127,7 +127,7 @@ namespace multiplayerPracticeGame
             else{
                 progressText.text = "Match is ready to begin";
                 Debug.Log("Minimum or more players in the room.Loading level");
-                PhotonNetwork.LoadLevel("MazeLvl");
+               // PhotonNetwork.LoadLevel("MazeLvl");
             }
         }
         public override void OnPlayerEnteredRoom(Player newPlayer)
