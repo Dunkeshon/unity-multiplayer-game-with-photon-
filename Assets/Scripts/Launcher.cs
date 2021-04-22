@@ -142,7 +142,7 @@ namespace multiplayerPracticeGame
                 PhotonNetwork.CurrentRoom.IsOpen = false;
                 Debug.Log("Maximum players achieved. Room is closed");
             }
-            if(PhotonNetwork.CurrentRoom.PlayerCount > (int)maxPlayersPerRoom){
+            if(PhotonNetwork.CurrentRoom.PlayerCount >= (int)minimumPlayersNeeded){
                 PhotonNetwork.LoadLevel("MazeLvl");
                 Debug.Log("minimum players achieved. level loading");
             }
