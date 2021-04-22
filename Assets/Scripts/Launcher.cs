@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 using Photon.Pun;
 using Photon.Realtime;
+
 
 namespace multiplayerPracticeGame
 {
@@ -12,12 +14,15 @@ namespace multiplayerPracticeGame
         [Tooltip("Maximum number of players per room. When a room is full, it can't be joined by new players, and so new room will be created")]
         [SerializeField]
         private byte maxPlayersPerRoom = 4;
+        [Tooltip("minimum amount of players needed to start a game")]
+        [SerializeField]
+        private byte minimumPlayersNeeded = 2;
+       
         [Tooltip("The Ui group to let the user enter name, connect and play")]
         [SerializeField]
         private GameObject loginGroup;
         [Tooltip("The UI Label to inform the user that the connection is in progress")]
         [SerializeField]
-        private GameObject progressLabel;
 
         #endregion
 
@@ -27,13 +32,15 @@ namespace multiplayerPracticeGame
         /// this client's version number. Users are separetated from each other by gameVersion
         /// </summary>
         string gameVersion = "1";
-
+        private GameObject progressLabel;
+        TextMeshPro progressText;
         #endregion
 
         #region MonoBehaviour CallBacks 
 
         private void Awake()
-        {
+        {          
+            progressText = progressLabel.GetComponent<TextMeshPro>();
             //#critical 
             // this make sure we can use PhotonNetwork.LoadLevel() on the master client and all clients in the same room sync their level automatically
             PhotonNetwork.AutomaticallySyncScene = true; 
@@ -82,6 +89,7 @@ namespace multiplayerPracticeGame
         private void ShowLoadingLabel()
         {
             loginGroup.SetActive(false);
+            progressText.text = "Connecting";
             progressLabel.SetActive(true);
         }
 
@@ -109,6 +117,31 @@ namespace multiplayerPracticeGame
         public override void OnJoinedRoom()
         {
             Debug.Log("PUN Basics Tutorial/Launcher: OnJoinedRoom() called by PUN. Now this client is in a room.");
+            
+            int playerCount = PhotonNetwork.CurrentRoom.PlayerCount;
+            
+              
+            if(playerCount < (int)minimumPlayersNeeded){
+                progressText.text = "Waiting for players";
+            }
+            else{
+                progressText.text = "Match is ready to begin";
+                Debug.Log("Minimum or more players in the room.Loading level");
+                PhotonNetwork.LoadLevel("MazeLvl");
+            }
+        }
+        public override void OnPlayerEnteredRoom(Player newPlayer)
+        {
+            base.OnPlayerEnteredRoom(newPlayer);
+            //#Critical : add displaying player counter
+
+            // shown to players, who are already in the room
+            if(PhotonNetwork.CurrentRoom.PlayerCount==(int)maxPlayersPerRoom){
+                PhotonNetwork.CurrentRoom.IsOpen = false;
+                Debug.Log("Maximum players achieved. Room is closed");
+            }
+            
+            Debug.Log("New player entered the room");
         }
         #endregion
 
