@@ -23,7 +23,7 @@ namespace multiplayerPracticeGame
         private GameObject loginGroup;
         [Tooltip("The UI Label to inform the user that the connection is in progress")]
         [SerializeField]
-
+        private GameObject progressLabel;
         #endregion
 
         #region Private Fields
@@ -32,15 +32,15 @@ namespace multiplayerPracticeGame
         /// this client's version number. Users are separetated from each other by gameVersion
         /// </summary>
         string gameVersion = "1";
-        private GameObject progressLabel;
-        TextMeshPro progressText;
+        private TextMeshProUGUI progressText;
+     
         #endregion
 
         #region MonoBehaviour CallBacks 
 
         private void Awake()
         {          
-            progressText = progressLabel.GetComponent<TextMeshPro>();
+            progressText = progressLabel.GetComponent<TextMeshProUGUI>();
             //#critical 
             // this make sure we can use PhotonNetwork.LoadLevel() on the master client and all clients in the same room sync their level automatically
             PhotonNetwork.AutomaticallySyncScene = true; 
